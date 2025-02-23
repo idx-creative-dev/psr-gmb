@@ -69,7 +69,7 @@
                     'text/plain': new Blob([bodyClone.innerText], { type: 'text/plain' })
                 })
             ]);
-            alert('Halaman telah disalin dengan CSS & iframe!');
+            alert('Halaman telah disalin!');
         } catch (err) {
             console.error('Gagal menyalin:', err);
             alert('Gagal menyalin. Coba lagi!');
