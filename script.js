@@ -1,5 +1,4 @@
 (function () {
-    // Buat tombol floating
     const button = document.createElement('button');
     button.innerHTML = 'Copy Content';
     Object.assign(button.style, {
@@ -16,31 +15,24 @@
     });
     document.body.appendChild(button);
 
-    // Fungsi untuk menyalin HTML dengan CSS ke clipboard
     button.addEventListener('click', async function () {
-        // Hilangkan tombol sebelum menyalin
         button.remove();
 
-        const bodyClone = document.body.cloneNode(true); // Clone body agar tidak mempengaruhi halaman asli
+        const bodyClone = document.body.cloneNode(true);
 
-        // Pastikan semua elemen contenteditable tersalin dengan perubahan terbaru
         bodyClone.querySelectorAll('[contenteditable="true"]').forEach(el => {
             el.innerHTML = el.innerHTML;
         });
 
-        // Proses iframe
         bodyClone.querySelectorAll('iframe').forEach(iframe => {
             try {
-                // Jika iframe berasal dari domain yang sama, ambil isinya
                 const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
                 iframe.outerHTML = `<div>${iframeDoc.documentElement.innerHTML}</div>`;
             } catch (e) {
-                // Jika cross-origin, hanya salin elemen <iframe> saja
                 console.warn('Tidak bisa mengakses iframe karena CORS:', iframe.src);
             }
         });
 
-        // Menyalin semua style di halaman
         const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
         let styleContent = '';
         styles.forEach(style => {
@@ -51,7 +43,6 @@
             }
         });
 
-        // Bungkus dalam format HTML lengkap agar bisa dipaste dengan style
         const fullHtml = `
             <html>
                 <head>
@@ -61,7 +52,6 @@
             </html>
         `;
 
-        // Gunakan Clipboard API untuk menyalin dalam format HTML
         try {
             await navigator.clipboard.write([
                 new ClipboardItem({
